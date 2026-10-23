@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "weight_policy": {
+    "version": 1,
+    "basis": "business_priority",
+    "core_min_share": 0.5
+  },
+  "gate_tests": [
+    "test_outputs.py::test_gate_recovers_two_channel_result_contract"
+  ],
+  "tests": {
+    "test_outputs.py::test_hidden_channel_assignment_overrides_peak_height_order": {
+      "weight": 0.07,
+      "priority": "core",
+      "rationale": "通道归属决定每条标定线交给哪段谱线解释，按峰高猜测会直接错分配比结果。"
+    },
+    "test_outputs.py::test_overlapping_lines_share_solved_response_coefficient": {
+      "weight": 0.07,
+      "priority": "core",
+      "rationale": "同一通道内的交叠线必须共用一个响应系数，独立估峰会破坏定量关系。"
+    },
+    "test_outputs.py::test_three_channels_resolve_global_assignment": {
+      "weight": 0.08,
+      "priority": "core",
+      "rationale": "三通道组合检验归属搜索不能只做两路交换，并保持目录顺序之外的排序结果。"
+    },
+    "test_outputs.py::test_mixed_channel_polarity_is_recovered": {
+      "weight": 0.08,
+      "priority": "core",
+      "rationale": "反相通道会把洛伦兹峰整体翻到基线下方，极性错了就无法解释同批谱线。"
+    },
+    "test_outputs.py::test_twin_lines_use_catalog_id_canonical_tiebreak": {
+      "weight": 0.09,
+      "priority": "core",
+      "rationale": "孪生线造成残差完全相同的多个归属，只有规范字典序能保证每次输出唯一对应。"
+    },
+    "test_outputs.py::test_truncated_spectrum_returns_boundary_coefficient": {
+      "weight": 0.07,
+      "priority": "core",
+      "rationale": "旧导出截断后常见箱约束最优，直接在边界外判无解会丢掉整条合格谱线。"
+    },
+    "test_outputs.py::test_public_upper_bound_finishes_without_nonlinear_search": {
+      "weight": 0.05,
+      "priority": "core",
+      "rationale": "公开上界必须在批处理时限内完成，否则实际复核班次无法按时交付。"
+    },
+    "test_outputs.py::test_channel_array_order_does_not_change_hidden_assignment": {
+      "weight": 0.04,
+      "priority": "core",
+      "rationale": "通道数组顺序不能改变跨轮隐藏归属，否则旧配置换序会把整组谱线归错探头。"
+    },
+    "test_outputs.py::test_conditioned_overlap_recovers_canonical_joint_fit": {
+      "weight": 0.04,
+      "priority": "core",
+      "rationale": "高重叠、截断和孪生线同时出现时仍须取得全局最小残差，局部峰值排序会交出错误定量结果。"
+    },
+    "test_outputs.py::test_canonical_polarity_tie_on_constant_narrow_channel": {
+      "weight": 0.04,
+      "priority": "core",
+      "rationale": "窄通道极性与响应系数几乎并列时，必须用精确残差和规范 polarity 选唯一答案，浮点扩张顺序不能替代题面判定。"
+    },
+    "test_outputs.py::test_minimum_sample_count_is_accepted": {
+      "weight": 0.02,
+      "priority": "boundary",
+      "rationale": "最少合法采样数应正常反演，避免边界工况被无谓挡在批处理之外。"
+    },
+    "test_outputs.py::test_too_few_samples_are_refused": {
+      "weight": 0.02,
+      "priority": "boundary",
+      "rationale": "欠定谱线继续拟合会得到不可辨认的归属，需要在计算前明确终止。"
+    },
+    "test_outputs.py::test_single_catalog_line_is_refused": {
+      "weight": 0.005,
+      "priority": "schema",
+      "rationale": "单条目录线无法覆盖多通道归属，接受它会让下游误以为通道信息完整。"
+    },
+    "test_outputs.py::test_single_channel_is_refused": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "单通道输入没有归属反演空间，继续计算会把缺通道当成有效实验。"
+    },
+    "test_outputs.py::test_duplicate_channel_identifier_is_refused": {
+      "weight": 0.015,
+      "priority": "schema",
+      "rationale": "重复通道标识会使基线映射和归属结果互相覆盖，必须在写结果前拦截。"
+    },
+    "test_outputs.py::test_catalog_lower_bound_metrics_are_accepted": {
+      "weight": 0.005,
+      "priority": "boundary",
+      "rationale": "目录中心、宽度和强度的公开下界必须可计算，否则合法标定线会被误拒。"
+    },
+    "test_outputs.py::test_duplicate_catalog_identifier_is_refused": {
+      "weight": 0.005,
+      "priority": "schema",
+      "rationale": "重复目录标识会让归属映射无法回指唯一样本，必须拒绝以免串线。"
+    },
+    "test_outputs.py::test_run_missing_scale_is_refused": {
+      "weight": 0.015,
+      "priority": "schema",
+      "rationale": "轮次缺少相对强度时无法把多轮谱线放到同一响应尺度，必须拒绝。"
+    },
+    "test_outputs.py::test_run_scale_below_public_bound_is_refused": {
+      "weight": 0.015,
+      "priority": "boundary",
+      "rationale": "轮次强度因子越界会让共同系数失去物理意义，应在拟合前拦截。"
+    },
+    "test_outputs.py::test_run_boolean_scale_is_refused": {
+      "weight": 0.005,
+      "priority": "schema",
+      "rationale": "布尔尺度伪装成数值会悄悄改变整轮响应，必须按类型错误拒绝。"
+    },
+    "test_outputs.py::test_mismatched_run_channel_sets_are_refused": {
+      "weight": 0.015,
+      "priority": "schema",
+      "rationale": "各轮通道集合不一致时，同一个隐藏归属无法跨轮复用，必须拒绝。"
+    },
+    "test_outputs.py::test_extra_catalog_field_is_refused": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "目录项出现未约定字段会让参数来源失去确定性，需要在组阵前拒绝。"
+    },
+    "test_outputs.py::test_catalog_centers_closer_than_spacing_are_refused": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "中心过近会弱化目录线区分度，使归属最小残差失去可靠物理解释。"
+    },
+    "test_outputs.py::test_catalog_boolean_measurement_is_refused": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "布尔值伪装成数值会改变线宽并污染整个线性系统，应作为类型错误处理。"
+    },
+    "test_outputs.py::test_catalog_strength_below_public_bound_is_refused": {
+      "weight": 0.015,
+      "priority": "schema",
+      "rationale": "强度低于公开下限会让共同系数失去定量尺度，需在矩阵组装前拦截。"
+    },
+    "test_outputs.py::test_unknown_schema_is_refused": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "未知输入版本可能采用不同参数口径，直接读取会把不兼容数据混入本批结果。"
+    },
+    "test_outputs.py::test_missing_top_level_key_is_refused": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "缺少目录或通道对象时无法形成完整线性系统，必须在读写结果前结束。"
+    },
+    "test_outputs.py::test_missing_response_coordinate_keeps_old_result": {
+      "weight": 0.03,
+      "priority": "recovery",
+      "rationale": "采样缺字段时保留上一份合格报告，避免交接记录被半成品覆盖。"
+    },
+    "test_outputs.py::test_channel_missing_samples_is_refused": {
+      "weight": 0.005,
+      "priority": "schema",
+      "rationale": "通道缺少采样数组时无法构造线性系统，必须在写结果前停止。"
+    },
+    "test_outputs.py::test_unsorted_sample_positions_are_refused": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "重复或乱序横坐标会重复计权，必须在归属搜索前拒绝该通道。"
+    },
+    "test_outputs.py::test_sample_response_above_public_bound_is_refused": {
+      "weight": 0.02,
+      "priority": "boundary",
+      "rationale": "响应越界通常意味着探头饱和或单位混用，继续反演会得到错误归属。"
+    },
+    "test_outputs.py::test_extra_top_level_key_keeps_old_result": {
+      "weight": 0.02,
+      "priority": "recovery",
+      "rationale": "严格字段集出现额外键时保持旧结果原样，便于批次安全重放。"
+    },
+    "test_outputs.py::test_success_writes_silent_canonical_json": {
+      "weight": 0.02,
+      "priority": "recovery",
+      "rationale": "稳定且静默的字节能让复核系统识别同一批次的重复执行。"
+    }
+  }
+}
