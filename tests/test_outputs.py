@@ -333,7 +333,7 @@ def test_hidden_channel_assignment_overrides_peak_height_order(tmp_path: Path) -
 def test_overlapping_lines_share_solved_response_coefficient(tmp_path: Path) -> None:
     # case_id: MODEL-01 COEFF-01 COEFF-02 COEFF-03
     """题面：
-    「峰高满足 `amplitude = coefficient * strength`。」
+    「峰高满足 `amplitude = coefficient * strength`，极性只影响波形方向。」
     """
 
     catalog = [
@@ -366,7 +366,7 @@ def test_overlapping_lines_share_solved_response_coefficient(tmp_path: Path) -> 
 def test_three_channels_resolve_global_assignment(tmp_path: Path) -> None:
     # case_id: ASSIGN-03 ASSIGN-04 GLOBAL-01 RESULT-04
     """题面：
-    「`peaks` 恰好有目录项数，每项恰好带 `amplitude`、`center`、`channel`、`id`、`width`，并按 `center` 升序排列。」
+    「`peaks` 恰好有目录项数，每项恰好带 `amplitude`、`center`、`channel`、`id`、`width`，并按 `center`、`id` 依次升序排列。」
     """
 
     catalog = [
@@ -656,7 +656,7 @@ def test_minimum_sample_count_is_accepted(tmp_path: Path) -> None:
 def test_too_few_samples_are_refused(tmp_path: Path) -> None:
     # case_id: SAMPLES-02 REFUSAL-01
     """题面：
-    「字段、类型或数值域不合规时不写结果，旧文件保持原样。」
+    「每个通道要有 41 至 401 个采样项，采样项恰好带 `x` 和 `y`。」
     """
 
     catalog = [
@@ -840,7 +840,7 @@ def test_mismatched_run_channel_sets_are_refused(tmp_path: Path) -> None:
 def test_duplicate_channel_identifier_is_refused(tmp_path: Path) -> None:
     # case_id: CHANNEL-01
     """题面：
-    「目录项和通道的 `id` 都必须是非空且各自不重复的字符串。」
+    「目录项、轮次以及同一轮次内的通道 `id` 都必须是非空且各自不重复的字符串。」
     """
 
     catalog = [
@@ -866,7 +866,7 @@ def test_duplicate_channel_identifier_is_refused(tmp_path: Path) -> None:
 def test_duplicate_catalog_identifier_is_refused(tmp_path: Path) -> None:
     # case_id: CATALOG-04
     """题面：
-    「目录项和通道的 `id` 都必须是非空且各自不重复的字符串。」
+    「目录项、轮次以及同一轮次内的通道 `id` 都必须是非空且各自不重复的字符串。」
     """
 
     catalog = [
@@ -1131,7 +1131,7 @@ def test_channel_missing_samples_is_refused(tmp_path: Path) -> None:
 def test_unsorted_sample_positions_are_refused(tmp_path: Path) -> None:
     # case_id: SAMPLE-02
     """题面：
-    「同一通道内 `x` 从 0 到 1000 严格递增且不重复；响应 `y` 不超出 -5–100。」
+    「同一通道内 `x` 从 0 到 1000 严格递增且不重复」
     """
 
     catalog = [
@@ -1157,7 +1157,7 @@ def test_unsorted_sample_positions_are_refused(tmp_path: Path) -> None:
 def test_sample_response_above_public_bound_is_refused(tmp_path: Path) -> None:
     # case_id: SAMPLE-03
     """题面：
-    「同一通道内 `x` 从 0 到 1000 严格递增且不重复，`y` 落在 -5 到 100。」
+    「同一通道内 `x` 从 0 到 1000 严格递增且不重复；响应 `y` 不超出 -5–100。」
     """
 
     catalog = [
