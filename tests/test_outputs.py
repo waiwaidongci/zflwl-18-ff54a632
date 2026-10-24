@@ -13,14 +13,24 @@ import pytest
 
 ENTRY = os.environ.get("SPECTRUM_DECONVOLVER", "/app/deconvolve.py")
 
+SAFE_ENV = {
+    "PATH": "/usr/bin:/bin",
+    "HOME": "/tmp",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONHASHSEED": "0",
+}
+
 
 def _run(
     payload: Path, output: Path, timeout: int = 20
 ) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        [sys.executable, ENTRY, str(payload), str(output)],
+        [sys.executable, "-S", "-P", "-B", ENTRY, str(payload), str(output)],
         text=True,
         capture_output=True,
+        env=SAFE_ENV,
         timeout=timeout,
         check=False,
     )
